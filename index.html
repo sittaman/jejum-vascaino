@@ -27,7 +27,6 @@
       text-align: center;
       padding: 20px;
       position: relative;
-      overflow: hidden;
     }
 
     /* Fundo com imagem do escudo enviada pelo usuário */
@@ -251,6 +250,45 @@
       border-bottom: none;
     }
 
+    .titulo-item.eliminado {
+      opacity: 0.4;
+      position: relative;
+    }
+
+    .titulo-item.eliminado .titulo-nome,
+    .titulo-item.eliminado .titulo-data,
+    .titulo-item.eliminado .dias-faltam,
+    .titulo-item.eliminado .dias-faltam-label {
+      filter: grayscale(100%);
+    }
+
+    .ribbon-eliminado {
+      position: absolute;
+      top: 8px;
+      left: -8px;
+      background: #cc0000;
+      color: #fff;
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+      letter-spacing: 3px;
+      padding: 4px 16px;
+      box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.6);
+      z-index: 10;
+      transform: rotate(-2deg);
+      border-radius: 2px;
+    }
+
+    .ribbon-eliminado::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0;
+      height: 0;
+      border-top: 6px solid #880000;
+      border-left: 8px solid transparent;
+    }
+
     .titulo-nome {
       font-family: 'Bebas Neue', cursive;
       font-size: clamp(1rem, 2.5vw, 1.4rem);
@@ -367,13 +405,14 @@
   <div class="proximos-titulos">
     <h3>Próximos Possíveis Títulos</h3>
 
-    <div class="titulo-item" id="sul-americana">
+    <div class="titulo-item eliminado" id="sul-americana">
+      <div class="ribbon-eliminado">ELIMINADO</div>
       <div>
         <div class="titulo-nome">🏆 Copa Sul-Americana</div>
         <div class="titulo-data">21 de Novembro de 2026</div>
       </div>
       <div>
-        <div class="dias-faltam" id="dias-sul">0</div>
+        <div class="dias-faltam" id="dias-sul">—</div>
         <div class="dias-faltam-label">DIAS</div>
       </div>
     </div>
@@ -445,7 +484,7 @@
     document.getElementById('ovrly').addEventListener('click', triggerPlay);
 
     function triggerPlay() {
-      document.querySelector('body').style.setProperty('overflow', 'auto');
+      //document.querySelector('body').style.setProperty('overflow', 'auto');
       ytPlayer.unMute();
       ytPlayer.playVideo();
     }
@@ -455,7 +494,6 @@
 
   <script>
     const tituloDate = new Date('2016-05-08T00:00:00');
-    const sulAmericanaDate = new Date('2026-11-21T00:00:00');
     const brasileiraoDate = new Date('2026-12-02T00:00:00');
     const copaBrasilDate = new Date('2026-12-06T00:00:00');
 
@@ -464,7 +502,6 @@
     function atualizar() {
       const agora = new Date();
       const diff = agora - tituloDate;
-      const diffSul = sulAmericanaDate - agora;
       const diffBra = brasileiraoDate - agora;
       const diffCopaBra = copaBrasilDate - agora;
 
@@ -495,11 +532,9 @@
       document.getElementById('minutos').textContent = totalMinutos.toLocaleString('pt-BR');
       document.getElementById('segundos').textContent = totalSegundos.toLocaleString('pt-BR');
 
-      const diasSul = Math.max(0, Math.floor(diffSul / (1000 * 60 * 60 * 24)));
       const diasBra = Math.max(0, Math.floor(diffBra / (1000 * 60 * 60 * 24)));
       const diasCopaBra = Math.max(0, Math.floor(diffCopaBra / (1000 * 60 * 60 * 24)));
 
-      document.getElementById('dias-sul').textContent = diasSul.toLocaleString('pt-BR');
       document.getElementById('dias-bra').textContent = diasBra.toLocaleString('pt-BR');
       document.getElementById('dias-copabra').textContent = diasCopaBra.toLocaleString('pt-BR');
     }
